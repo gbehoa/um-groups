@@ -168,6 +168,7 @@ function um_groups_send_notification_to_group_members( $post_id, $author_id, $wa
 
 	$table_name = UM()->Groups()->setup()->db_groups_table;
 	$group_id = get_post_meta( $post_id, '_group_id', true );
+	$content = get_post_meta( $post_id, '_original_content', true );
 	$members = $wpdb->get_col( "SELECT user_id1 FROM $table_name WHERE group_id = $group_id AND `status` = 'approved'" );
 
 	foreach ( $members as $i => $member_id ) {
@@ -213,7 +214,8 @@ function um_groups_send_notification_to_group_members( $post_id, $author_id, $wa
 				'{post_url}',
 				'{author_name}',
 				'{author_photo}',
-				'{member_name}'
+				'{member_name}',
+				'{content}'
 			),
 			'tags_replace'      => array(
 				$group_name,
@@ -222,7 +224,8 @@ function um_groups_send_notification_to_group_members( $post_id, $author_id, $wa
 				$post_url,
 				$author_name,
 				$author_photo,
-				$member_name
+				$member_name,
+				$content
 			)
 		) );
 	} // end loop
